@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狼人杀模拟</title>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/person.js"></script>
+    <script src="js/villager.js"></script>
+    <script src="js/werewolves.js"></script>
+    <script src="js/seer.js"></script>
+    <script src="js/witch.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/charactertype.js"></script>
+    <script src="js/host.js"></script>
+    
+    
+    <script>
+    //这里我用来放所有的主要操作,当然也可以独立成一个js文件出去然后引入
+        $(document).ready(start);
+        
+        function start(){
+            var tbl = new table();
+            var host1 = new host();
+            tbl.sethost(host1);
+            
+            var v1 = new villager();
+            var w = new werewolf();
+            var s = new seer();
+            var wit = new witch();
+            var tricky = new person("tricky");
+            var yvonne = new person("yvonne");
+            var aspire = new person("aspire");
+            var ajerk = new person("ajerk");
+            var bill = new person("bill");
+            var meu = new person("meu");
+            var feng = new person("feng");
+            var bobo = new person("bobo");
+            
+            tricky.givecard(v1);
+            aspire.givecard(v1);
+            yvonne.givecard(s);
+            bill.givecard(wit);
+            
+            ajerk.givecard(w);
+            meu.givecard(w);
+            feng.givecard(w);
+            bobo.givecard(w);
+            
+            tbl.addperson(tricky);
+            tbl.addperson(yvonne);
+            tbl.addperson(aspire);
+            tbl.addperson(ajerk);
+            tbl.addperson(bill);
+            tbl.addperson(meu);
+            tbl.addperson(feng);
+            tbl.addperson(bobo);
+            
+            //第一天
+            host1.nightcoming();
+            host1.werewolvestime();
+            ajerk.character.kill(1);
+            host1.seertime();
+            yvonne.character.check(3);
+            host1.witchtime();
+            bill.character.heal();
+            host1.anouncedead();
+            host1.checkresult();
+            
+            tricky.speak();
+            yvonne.speak();
+            aspire.speak();
+            ajerk.speak();
+            bill.speak();
+            meu.speak();
+            feng.speak();
+            bobo.speak();
+            
+            tricky.vote(8);
+            yvonne.vote(8);
+            aspire.vote(8);
+            ajerk.vote(8);
+            bill.vote(8);
+            meu.vote(8);
+            feng.vote(8);
+            bobo.vote(2);
+            
+            host1.calvote();
+            host1.checkresult();
+            
+            
+            //第一天
+            host1.nightcoming();
+            host1.werewolvestime();
+            ajerk.character.kill(2);
+            host1.seertime();
+            yvonne.character.check(7);
+            host1.witchtime();
+            bill.character.poison(6);
+            host1.anouncedead();
+            host1.checkresult();
+            
+            tricky.speak();
+            aspire.speak();
+            ajerk.speak();
+            bill.speak();
+            feng.speak();
+            
+            tricky.vote(7);
+            aspire.vote(7);
+            ajerk.vote(7);
+            bill.vote(7);
+            feng.vote(5);
+            
+            host1.calvote();
+            host1.checkresult();
+            
+            //第三天
+            host1.nightcoming();
+            host1.werewolvestime();
+            ajerk.character.kill(5);
+            host1.seertime();
+            host1.witchtime();
+            host1.anouncedead();
+            host1.checkresult();
+            
+            tricky.speak();
+            aspire.speak();
+            ajerk.speak();
+            feng.speak();
+            
+            tricky.vote(4);
+            aspire.vote(4);
+            ajerk.vote(4);
+            feng.vote(4);
+            
+            host1.calvote();
+            host1.checkresult();
+            
+            
+        }
+    </script>
+</head>
+<body>
+    <div id="messagebox">
+    </div>
+</body>
+</html>
