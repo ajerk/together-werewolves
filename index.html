@@ -14,13 +14,19 @@
     <script src="js/tools.js"></script>
     <script src="js/charactertype.js"></script>
     <script src="js/host.js"></script>
+    <scrept src="js/thedead.js"></scrept>
     
     
     <script>
-    //这里我用来放所有的主要操作,当然也可以独立成一个js文件出去然后引入
-        $(document).ready(start);
         
+        //天数
+        var day = 0;
+        
+        //这里我用来放所有的主要操作,当然也可以独立成一个js文件出去然后引入
+        $(document).ready(start);
+
         function start(){
+               
             var tbl = new table();
             var host1 = new host();
             tbl.sethost(host1);
@@ -29,13 +35,21 @@
             var w = new werewolf();
             var s = new seer();
             var wit = new witch();
+            //1号
             var tricky = new person("tricky");
+            //2号
             var yvonne = new person("yvonne");
+            //3号
             var aspire = new person("aspire");
+            //4号
             var ajerk = new person("ajerk");
+            //5号
             var bill = new person("bill");
+            //6号
             var meu = new person("meu");
+            //7号
             var feng = new person("feng");
+            //8号
             var bobo = new person("bobo");
             
             tricky.givecard(v1);
@@ -58,7 +72,12 @@
             tbl.addperson(bobo);
             
             //第一天
+            
+            //day == 0 ，游戏开始
+            host1.day(day);
+            
             host1.nightcoming();
+            //以下day == 1
             host1.werewolvestime();
             ajerk.character.kill(1);
             host1.seertime();
@@ -67,6 +86,10 @@
             bill.character.heal();
             host1.anouncedead();
             host1.checkresult();
+            host1.day(day);
+
+            //第一夜的死者发表遗言
+            host1.thedeadlastwords();
             
             tricky.speak();
             yvonne.speak();
@@ -76,6 +99,7 @@
             meu.speak();
             feng.speak();
             bobo.speak();
+            
             
             tricky.vote(8);
             yvonne.vote(8);
@@ -88,9 +112,12 @@
             
             host1.calvote();
             host1.checkresult();
+            //若游戏继续，淘汰者发表遗言
+            host1.thedeadlastwords();
             
             
-            //第一天
+            //第二天
+            
             host1.nightcoming();
             host1.werewolvestime();
             ajerk.character.kill(2);
@@ -100,6 +127,7 @@
             bill.character.poison(6);
             host1.anouncedead();
             host1.checkresult();
+            host1.day(day);
             
             tricky.speak();
             aspire.speak();
@@ -115,8 +143,11 @@
             
             host1.calvote();
             host1.checkresult();
+            //若游戏继续，淘汰者发表遗言
+            host1.thedeadlastwords();
             
             //第三天
+            
             host1.nightcoming();
             host1.werewolvestime();
             ajerk.character.kill(5);
@@ -124,6 +155,7 @@
             host1.witchtime();
             host1.anouncedead();
             host1.checkresult();
+            host1.day(day);
             
             tricky.speak();
             aspire.speak();
@@ -137,6 +169,8 @@
             
             host1.calvote();
             host1.checkresult();
+            //若游戏继续，淘汰者发表遗言
+            host1.thedeadlastwords();
             
             
         }
