@@ -1,8 +1,8 @@
 //主持人
-
-
 function host(){
-    
+
+    //绑定记录淘汰者
+    this.thedeath = undefined;
     
     //主持人主持哪一个桌子
     this.table = undefined;
@@ -22,7 +22,7 @@ function host(){
         //要先重置昨夜的死亡情况
         this.msgrecord.lastnightkilledid = 0;
         this.msgrecord.witchkillid = 0;
-        addMsg("天黑请闭眼");
+        addMsg("<br>天黑请闭眼<br>");
     }
     //狼人请睁眼
     this.werewolvestime = function(){
@@ -40,13 +40,25 @@ function host(){
     //宣布死亡情况
     this.anouncedead = function(){
         if(this.msgrecord.witchkillid == 0 && this.msgrecord.lastnightkilledid == 0){
-            addMsg("昨夜平安夜");
-        }else if(this.msgrecord.lastnightkilledid !== 0 && this.msgrecord.witchkillid == 0){
-            addMsg("昨夜,"+this.msgrecord.lastnightkilledid+"号玩家死亡");
-        }else if(this.msgrecord.lastnightkilledid == 0 && this.msgrecord.witchkillid !== 0){
-            addMsg("昨夜,"+this.msgrecord.witchkillid+"号玩家死亡");
-        }else if(this.msgrecord.lastnightkilledid !== 0 && this.msgrecord.witchkillid !== 0){
-            addMsg("昨夜双死,"+this.msgrecord.lastnightkilledid+"号 "+this.msgrecord.witchkillid+"号玩家死亡");
+            addMsg("天亮了全体请睁眼,昨夜平安夜");
+            this.thedeath.deadnum = 0;
+            this.thedeath.personsid[0] = null;
+            this.thedeath.personsid[1] = null;
+        }else if(this.msgrecord.lastnightkilledid != 0 && this.msgrecord.witchkillid == 0){
+            addMsg("天亮了全体请睁眼,昨夜,"+this.msgrecord.lastnightkilledid+"号玩家死亡");
+            this.thedeath.deadnum = 1;
+            this.thedeath.personsid[0] = this.msgrecord.lastnightkilledid;
+            this.thedeath.personsid[1] = null;
+        }else if(this.msgrecord.lastnightkilledid == 0 && this.msgrecord.witchkillid != 0){
+            addMsg("天亮了全体请睁眼,昨夜,"+this.msgrecord.witchkillid+"号玩家死亡");
+            this.thedeath.deadnum = 1;
+            this.thedeath.personsid[0] = this.msgrecord.witchkillid;
+            this.thedeath.personsid[1] = null;
+        }else if(this.msgrecord.lastnightkilledid != 0 && this.msgrecord.witchkillid != 0){
+            addMsg("天亮了全体请睁眼,昨夜双死,"+this.msgrecord.lastnightkilledid+"号 "+this.msgrecord.witchkillid+"号玩家死亡");
+            this.thedeath.deadnum = 2;
+            this.thedeath.personsid[0] = this.msgrecord.lastnightkilledid;
+            this.thedeath.personsid[1] = this.msgrecord.witchkillid;
         }
     }
     
@@ -68,6 +80,9 @@ function host(){
             }
             person.bevotedcount = 0; //重置为0票,第二天的时候才不会继续用前面的票数进行计数
         }
+        //记录死者名字
+        this.thedeath.personsid[0] = maxid;
+        this.thedeath.deadnum = 1;
         addMsg(maxid+"号玩家出局");
         this.table.persons[maxid-1].alive = false; //出局设置为false
     }
@@ -80,7 +95,7 @@ function host(){
     //核算游戏结果
     this.checkresult = function(){
         
-        godcount = 0;
+        godcount = 0; 
         villagercount = 0; 
         werewolvescount = 0; 
         for(var i=0;i<this.table.peoplecount;i++){
@@ -98,11 +113,11 @@ function host(){
         }
         
         if(werewolvescount == 0){
-            addMsg("游戏结束!好人获胜!");
+            addMsg("<br>游戏结束!好人获胜!<br>");
         }else if(godcount+villagercount == 0){
-            addMsg("游戏结束!狼人获胜!");
+            addMsg("<br>游戏结束!狼人获胜!<br>");
         }else{
-            addMsg("游戏继续");
+            addMsg("<br>游戏继续<br>");
         }
         
     }
@@ -112,29 +127,26 @@ function host(){
     //天数 
     this.day = function(day){
         if(day == 0)
-            $("#messagebox").append("<br><br>游戏开始<br><br>");
+            addMsg("<br><br>游戏开始<br><br>");
         else 
-            $("#messagebox").append("<br><br>第"+day+"天<br><br>");
+            addMsg("<br><br>第"+day+"天<br><br>");
     }
     
     
     //死者发表遗言
-    this.thedeadlastwords = function(){
+    this.thedeathlastwords = function(){
+        
         if(day == 1 && maxid == 0 ){
-            if(this.msgrecord.lastnightkilledid !== 0 && this.msgrecord.witchkillid !== 0){
-                addMsg("请");
-                if(this.msgrecord.lastnightkilledid!==0)
-                   addMsg(this.msgrecord.lastnightkilledid);
-                if(this.msgrecord.lastnightkilledid !== 0 && this.msgrecord.witchkillid == 0)
-                    addMsg("号玩家和");
-                if(this.msgrecord.witchkillid!==0)
-                   addMsg(this.msgrecord.witchkillid);
-                addMsg("号玩家发表遗言");
-            }
+            if(this.thedeath.deadnum == 1)
+                addMsg("请"+this.thedeath.personsid[0]+"号玩家发表遗言");
+            else if(this.thedeath.deadnum == 2)
+                addMsg("请"+this.thedeath.personsid[0]+"号玩家和"+this.thedeath.personsid[1]+"号玩家发表遗言");
         }
-        else if(day == 1 && maxid !== 0 )
-            addMsg("请"+maxid+"号玩家发表遗言");
-        else if( werewolvescount !== 0 && godcount+villagercount !== 0)
-            addMsg("请"+maxid+"号玩家发表遗言");
+        else if( werewolvescount != 0 && godcount+villagercount != 0){
+            if(this.thedeath.deadnum == 1)
+                addMsg("请"+this.thedeath.personsid[0]+"号玩家发表遗言");
+            else if(this.thedeath.deadnum == 2)
+                addMsg("请"+this.thedeath.personsid[0]+"号玩家和"+this.thedeath.personsid[1]+"号玩家发表遗言");
+        }
     }
 }
