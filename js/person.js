@@ -32,6 +32,12 @@ function person(name){
         addMsg(name+" 发言完毕");
     }
     
+    //绑定遗言方法
+    this.speaklastword = function(){
+        addMsg(name+" 开始发表遗言");
+        addMsg(name+" 遗言发表完毕");
+    }
+    
     //绑定投票方法
     this.vote = function(id){
         addMsg(name+" 投给了"+id+"号");

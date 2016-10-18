@@ -1,24 +1,30 @@
 //主持人
 function host(){
-
-    //绑定记录淘汰者
-    this.thedeath = undefined;
     
     //主持人主持哪一个桌子
     this.table = undefined;
     
     //主持人信息记录
     this.msgrecord = {
+        day:0, //天数
         lastnightkilledid:0, //昨夜杀死的是谁,0代表没人死
         usedheal:false, //女巫使用了解药吗?false表示没使用
         usepoison:false, //女巫使用了毒药吗?false表示还没用
         witchkillid:0 //女巫弄死了谁,0代表没弄死人
     };
     
+    //宣告天数 
+    this.anounceday = function(){
+        if(this.msgrecord.day == 0)
+            addMsg("<br><br>游戏开始<br><br>");
+        else 
+            addMsg("<br><br>第"+this.msgrecord.day+"天<br><br>");
+    }
+    
     //天黑请闭眼
     this.nightcoming = function(){
         
-        day++;
+        this.msgrecord.day++;
         //要先重置昨夜的死亡情况
         this.msgrecord.lastnightkilledid = 0;
         this.msgrecord.witchkillid = 0;
@@ -41,24 +47,12 @@ function host(){
     this.anouncedead = function(){
         if(this.msgrecord.witchkillid == 0 && this.msgrecord.lastnightkilledid == 0){
             addMsg("天亮了全体请睁眼,昨夜平安夜");
-            this.thedeath.deadnum = 0;
-            this.thedeath.personsid[0] = null;
-            this.thedeath.personsid[1] = null;
         }else if(this.msgrecord.lastnightkilledid != 0 && this.msgrecord.witchkillid == 0){
             addMsg("天亮了全体请睁眼,昨夜,"+this.msgrecord.lastnightkilledid+"号玩家死亡");
-            this.thedeath.deadnum = 1;
-            this.thedeath.personsid[0] = this.msgrecord.lastnightkilledid;
-            this.thedeath.personsid[1] = null;
         }else if(this.msgrecord.lastnightkilledid == 0 && this.msgrecord.witchkillid != 0){
             addMsg("天亮了全体请睁眼,昨夜,"+this.msgrecord.witchkillid+"号玩家死亡");
-            this.thedeath.deadnum = 1;
-            this.thedeath.personsid[0] = this.msgrecord.witchkillid;
-            this.thedeath.personsid[1] = null;
         }else if(this.msgrecord.lastnightkilledid != 0 && this.msgrecord.witchkillid != 0){
             addMsg("天亮了全体请睁眼,昨夜双死,"+this.msgrecord.lastnightkilledid+"号 "+this.msgrecord.witchkillid+"号玩家死亡");
-            this.thedeath.deadnum = 2;
-            this.thedeath.personsid[0] = this.msgrecord.lastnightkilledid;
-            this.thedeath.personsid[1] = this.msgrecord.witchkillid;
         }
     }
     
@@ -80,20 +74,19 @@ function host(){
             }
             person.bevotedcount = 0; //重置为0票,第二天的时候才不会继续用前面的票数进行计数
         }
-        //记录死者名字
-        this.thedeath.personsid[0] = maxid;
-        this.thedeath.deadnum = 1;
         addMsg(maxid+"号玩家出局");
         this.table.persons[maxid-1].alive = false; //出局设置为false
     }
     
     
     
-    var godcount = 0; //神民数量
-    var villagercount = 0; //平民数量
-    var werewolvescount = 0; //狼人数量
+    
     //核算游戏结果
     this.checkresult = function(){
+        
+        var godcount = 0; //神民数量
+        var villagercount = 0; //平民数量
+        var werewolvescount = 0; //狼人数量
         
         godcount = 0; 
         villagercount = 0; 
@@ -124,29 +117,6 @@ function host(){
     
     
     
-    //天数 
-    this.day = function(day){
-        if(day == 0)
-            addMsg("<br><br>游戏开始<br><br>");
-        else 
-            addMsg("<br><br>第"+day+"天<br><br>");
-    }
     
     
-    //死者发表遗言
-    this.thedeathlastwords = function(){
-        
-        if(day == 1 && maxid == 0 ){
-            if(this.thedeath.deadnum == 1)
-                addMsg("请"+this.thedeath.personsid[0]+"号玩家发表遗言");
-            else if(this.thedeath.deadnum == 2)
-                addMsg("请"+this.thedeath.personsid[0]+"号玩家和"+this.thedeath.personsid[1]+"号玩家发表遗言");
-        }
-        else if( werewolvescount != 0 && godcount+villagercount != 0){
-            if(this.thedeath.deadnum == 1)
-                addMsg("请"+this.thedeath.personsid[0]+"号玩家发表遗言");
-            else if(this.thedeath.deadnum == 2)
-                addMsg("请"+this.thedeath.personsid[0]+"号玩家和"+this.thedeath.personsid[1]+"号玩家发表遗言");
-        }
-    }
 }

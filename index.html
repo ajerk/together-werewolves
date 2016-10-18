@@ -14,25 +14,17 @@
     <script src="js/tools.js"></script>
     <script src="js/charactertype.js"></script>
     <script src="js/host.js"></script>
-    <script src="js/thedeath.js"></script>
     
     
     <script>
-        
-        //天数
-        var day = 0;
-         
-        
         //这里我用来放所有的主要操作,当然也可以独立成一个js文件出去然后引入
         $(document).ready(start);
 
         function start(){ 
             
             var tbl = new table();
-            var thedeath1 = new thedeath();
             var host1 = new host();
             tbl.sethost(host1);
-            thedeath1.sethost(host1);
             
             
             
@@ -79,7 +71,7 @@
             //第一天
             
             //day == 0 ，游戏开始
-            host1.day(day);
+            host1.anounceday();
             host1.nightcoming();
             //以下day == 1
             host1.werewolvestime();
@@ -90,10 +82,9 @@
             bill.character.heal();
             host1.anouncedead();
             host1.checkresult();
-            host1.day(day);
+            host1.anounceday();
 
-            //第一夜的死者发表遗言
-            host1.thedeathlastwords();
+            //第一夜平安夜没有遗言发表
             
             tricky.speak();
             yvonne.speak();
@@ -116,9 +107,8 @@
             
             host1.calvote();
             host1.checkresult();
-            //若游戏继续，淘汰者发表遗言
-            host1.thedeathlastwords();
-            thedeath1.lastwords("bobo");
+            //发表遗言
+            bobo.speaklastword();
             
             
             
@@ -134,7 +124,7 @@
             bill.character.poison(6);
             host1.anouncedead();
             host1.checkresult();
-            host1.day(day);
+            host1.anounceday();
             
             tricky.speak();
             aspire.speak();
@@ -150,9 +140,8 @@
             
             host1.calvote();
             host1.checkresult();
-            //若游戏继续，淘汰者发表遗言
-            host1.thedeathlastwords();
-            thedeath1.lastwords("feng");
+            //发表遗言
+            feng.speaklastword();
             
             //第三天
             
@@ -163,7 +152,7 @@
             host1.witchtime();
             host1.anouncedead();
             host1.checkresult();
-            host1.day(day);
+            host1.anounceday();
             
             tricky.speak();
             aspire.speak();
@@ -177,8 +166,7 @@
             
             host1.calvote();
             host1.checkresult();
-            //若游戏继续，淘汰者发表遗言
-            host1.thedeathlastwords(); 
+            //游戏结束,没有发表遗言
             
             
         }
