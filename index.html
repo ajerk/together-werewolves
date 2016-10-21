@@ -21,7 +21,7 @@
         $(document).ready(start);
 
         function start(){ 
-            
+        
             var tbl = new table();
             var host1 = new host();
             tbl.sethost(host1);
@@ -68,8 +68,7 @@
             tbl.addperson(feng);
             tbl.addperson(bobo);
             
-            //第一天
-            
+
             //day == 0 ，游戏开始
             host1.anounceday();
             host1.nightcoming();
@@ -83,8 +82,11 @@
             host1.anouncedead();
             host1.checkresult();
             host1.anounceday();
+            
+            //第一天
 
             //第一夜平安夜没有遗言发表
+            tbl.persons[0].speaklastword();
             
             tricky.speak();
             yvonne.speak();
@@ -108,7 +110,7 @@
             host1.calvote();
             host1.checkresult();
             //发表遗言
-            bobo.speaklastword();
+            tbl.persons[0].speaklastword();
             
             
             
@@ -141,7 +143,7 @@
             host1.calvote();
             host1.checkresult();
             //发表遗言
-            feng.speaklastword();
+            tbl.persons[0].speaklastword();
             
             //第三天
             
@@ -167,13 +169,15 @@
             host1.calvote();
             host1.checkresult();
             //游戏结束,没有发表遗言
+            tbl.persons[0].speaklastword();
             
             
         }
     </script>
+    
 </head>
 <body>
-    <div id="messagebox">
+    <div id="messagebox"   style="left:35%; text-align:left; display:block; position:absolute;" >
     </div>
 </body>
 </html>

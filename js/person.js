@@ -28,18 +28,38 @@ function person(name){
     
     //绑定说话方法
     this.speak = function(){
+        //"玩家信息"标志 x = 3
+        x = 3;
         addMsg(name+" 开始发言");
         addMsg(name+" 发言完毕");
     }
     
     //绑定遗言方法
     this.speaklastword = function(){
-        addMsg(name+" 开始发表遗言");
-        addMsg(name+" 遗言发表完毕");
+    
+        x = 3;
+        for( var i=0; i<100 ; i++ ){
+            if( this.table.host.msgrecord.personspeaklastword[i] != null ){
+                addMsg(this.table.persons[this.table.host.msgrecord.personspeaklastword[i]-1].name+" 开始发表遗言");
+                addMsg(this.table.persons[this.table.host.msgrecord.personspeaklastword[i]-1].name+" 遗言发表完毕");       
+            }
+            else
+                break;
+        }
+        //发表遗言完后重置 personlastword 为null
+        for( i=0 ; i<100 ; i++){
+            if(this.table.host.msgrecord.personspeaklastword[i] != null)
+                this.table.host.msgrecord.personspeaklastword[i] = null;
+            else 
+                break;
+        }
+        
     }
     
     //绑定投票方法
     this.vote = function(id){
+        //"玩家信息"标志 x = 3
+        x = 3;
         addMsg(name+" 投给了"+id+"号");
         this.table.persons[id-1].bevotedcount ++; //为他投票的这个人手动添加一票
     }

@@ -12,10 +12,12 @@ function seer(){
     
     //预言家验人
     this.check = function(id){
+        //"主持人信息" 标志 x = 1
+        x = 1;
         if(this.table.persons[id-1].character.type != ctype.bad){
-            addMsg("预言家,你验的"+id+"号玩家是好人");
+            addMsg("预言家,你验的"+id+"号玩家是(好人)");
         }else{
-            addMsg("预言家,你验的"+id+"号玩家是狼人");
+            addMsg("预言家,你验的"+id+"号玩家是(狼人)");
         }
         
     }
