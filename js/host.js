@@ -21,10 +21,10 @@ function host(){
         x = 1;
         if(this.msgrecord.day == 0){
             addMsg("<br><br/>");
-            addMsg("<br>游戏开始<br>");
+            addMsg("游戏开始");
         }
         else {
-            addMsg("<br>第"+this.msgrecord.day+"天<br>");
+            addMsg("第"+this.msgrecord.day+"天");
         }
     }
     
